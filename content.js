@@ -1,34 +1,39 @@
-// Get the current URL
 const url = window.location.href;
 
 // Extract strings based on URL format
-let extractedStrings;
-if (url.includes("/g/")) {  // Check for "/g/" format
-  // Extract 6-digit number (same logic as before)
-  const regex = /\/g\/(\d{6})/;
-  const match = url.match(regex);
-  if (match) {
+let extractedStrings = {};
+
+if (url.includes("/g/")) {
+  // Two possible patterns:
+  const regex1 = /\/g\/([a-zA-Z0-9]+)/;
+  const regex2 = /\/g\/([a-zA-Z0-9]+)\/(.*)/;
+
+  const match1 = url.match(regex1);
+  const match2 = url.match(regex2);
+
+  console.log('match1: ' + match1);
+  console.log('match2: ' + match2);
+
+  if (match1) {
     extractedStrings = {
-      string1: match[1],  // Extracted number
-      string2: url.split("/")[4],  // Assume 4th segment after "/"
+      string1: match1[1],
+      string2: "", // No string2 in this format
     };
-  } else {
-    extractedStrings = "Number not found in URL format";
+  }
+
+  if (match2 && match2[2]) {
+    const string2WithoutTrailingSlash = match2[2].endsWith('/') ? match2[2].slice(0, -1) : match2[2];
+    extractedStrings = {
+      string1: match2[1],
+      string2: string2WithoutTrailingSlash,
+    };
   }
 } else {
-  // Extract strings from non- "/g/" format
-  const urlParts = url.split("/");
-  if (urlParts.length >= 4) {
-    extractedStrings = {
-      string1: urlParts[3],  // Assume 3rd segment after "/"
-      string2: urlParts[4],  // Assume 4th segment after "/"
-    };
-  } else {
-    extractedStrings = "URL format not supported";
-  }
+  extractedStrings = {}; // Indicate no match for unsupported format
 }
 
 // Display the extracted strings (optional)
 console.log("Extracted strings:", extractedStrings);
+chrome.runtime.sendMessage({ message: 'numbers', extractedStrings });
 
 // You can further process the extracted strings here
