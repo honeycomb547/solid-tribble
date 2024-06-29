@@ -1,14 +1,10 @@
-const saveExtractedText = (data) => {
-    $.post('http://localhost:3000/api/data', data);
-  }
-  chrome.runtime.onMessage.addListener(
-    (request, sender, senderResponse) => {
-      switch (request.message) {
-        case 'numbers': {
-          saveExtractedText(request.data);
-          break;
-        }
-        default:
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    console.log('Hello World')
+    if (message.action === "getText") {
+      if (message.text) {
+        const url = "sauce.html"; // Replace with your webpage URL
+        chrome.tabs.create({ url: url });
       }
     }
-  );
+  });
+  

@@ -34,6 +34,6 @@ if (url.includes("/g/")) {
 
 // Display the extracted strings (optional)
 console.log("Extracted strings:", extractedStrings);
-chrome.runtime.sendMessage({ message: 'numbers', extractedStrings });
+chrome.runtime.sendMessage({ action: 'getText', text: extractedStrings });
 
 // You can further process the extracted strings here
