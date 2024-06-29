@@ -1,10 +1,18 @@
 {
   "manifest_version": 3,
-  "name": "Hentai Number Grabber",
+  "name": "Hentai Sauce Display",
   "version": "1.0",
   "author": "honeycomb547",
   "description": "This extension simply outputs the current number on various hentai sites.",
-  "permissions": ["activeTab", "nativeMessaging"],
+  "permissions": ["activeTab", "nativeMessaging", "scripting"],
+  "action": {
+    "default_icon": "logo.png",
+    "default_title": "Hentai Sauce Display"
+  },
+  "background": {
+    "service_worker": "src/background/index.js",
+    "type": "module"
+  },
   "content_scripts": [
     {
       "matches": [
@@ -12,17 +20,8 @@
         "https://*.exhentai.org/*"
       ],
       "js": [
-        "content.js"
+        "src/content/index.js"
       ]
     }
-  ],
-  "background": {
-    "scripts": [
-      "background.js"
-    ]
-  },
-  "browser_action": {
-    "default_icon": "logo.png",
-    "default_title": "Hentai number grabber"
-  }
+  ]
 }
